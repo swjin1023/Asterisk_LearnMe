@@ -84,3 +84,4 @@ notification_list = soup.select('#page-content > div > div > div.well.wellnopadd
 print("\n공지사항 업데이트:")
 for list in notification_list:
     print(list.text)
+
