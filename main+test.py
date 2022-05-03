@@ -1,23 +1,21 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromService
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-
-import time
+import chromedriver_autoinstaller
+import os
 from bs4 import BeautifulSoup
 import requests
 from tkinter import *
+import time
 
 #####################################################
-# 기본설정
-def chromeWebdriver():
-    chrome_service = ChromService(executable_path=ChromeDriverManager().install())
-    options = Options()
-    options.add_experimental_option('detach', True)
-    options.add_experimental_option('exculdeSwithces', ['enable-logging'])
-    driver = webdriver.Chrome(service=chrome_service, options=options)
-    return driver
+# 기본설정 크롬드라이버 다운
+chrome_ver = chromedriver_autoinstaller.get_chrome_version().split('.')[0]
+driver_path = f'./{chrome_ver}/chromedriver.exe'
+if os.path.exists(driver_path):
+    print(f"ChromeDriver is installed: {driver_path}")
+else:
+    print(f"install the ChromeDriver(ver: {chrome_ver})")
+    chromedriver_autoinstaller.install(True)
 
 #####################################################
 #tkinter 라이브러리를 이용하여 GUI 만들기
@@ -54,7 +52,7 @@ def login():
     # 런어스 홈페이지 접속
     driver = webdriver.Chrome("c:\chromedriver.exe")
     url = "https://www.learnus.org/"
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(15)
     driver.get(url)
     time.sleep(1)
 
@@ -116,6 +114,9 @@ def login():
     print("\n공지사항 업데이트:")
     for list in notification_list:
         print(list.text)
+
+    while (True):
+        pass
 
 btn.config(command=login)
 btn.pack()
