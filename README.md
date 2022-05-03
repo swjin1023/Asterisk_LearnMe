@@ -16,7 +16,7 @@ Django
 
 chromedriver_autoinstaller
 
-threading
+threading (이미 파이썬 안에 있음)
 
 #5/4  회의
 ###class로 깔끔하게 정리하기 - 진성욱
