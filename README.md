@@ -13,3 +13,13 @@ requests
 tkinter (이미 파이썬 안에 있음)
 
 Django
+
+chromedriver_autoinstaller
+
+#class로 깔끔하게 정리하기 - 진성욱
+#강좌 미완료된 거 뺴오는 거랑 -김진석
+#알림 공지사항 좀 자세히 뺴오는 거 -최연우
+
+#담주까지 영상 보고 class 공부 해보고
+
+#UI 나중에
