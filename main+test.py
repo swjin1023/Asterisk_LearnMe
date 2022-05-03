@@ -44,9 +44,13 @@ ent2=Entry(win)
 ent2.config(show="*")
 ent2.pack()
 ######################################
+def enter_login():
+    btn.config(command=login)
+
 btn = Button(win)
 btn.config(width=10, height=1)
 btn.config(text="로그인")
+btn.bind("<Return>", enter_login)
 
 def login():
     # 런어스 홈페이지 접속
@@ -118,7 +122,8 @@ def login():
     while (True):
         pass
 
-btn.config(command=login)
+
+
 btn.pack()
 ######################################
 win.mainloop()
