@@ -28,7 +28,7 @@ time.sleep(1)
 # 아이디 입력창
 id = driver.find_element(By.CSS_SELECTOR, "#ssoLoginForm > div > div:nth-child(1) > input:nth-child(3)")
 id.click()
-id.send_keys("학번")
+id.send_keys("2021189045")
 
 # 비밀번호 입력창
 pw = driver.find_element(By.CSS_SELECTOR, "#ssoLoginForm > div > div:nth-child(1) > input:nth-child(4)")

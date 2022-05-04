@@ -19,9 +19,9 @@ else:
     chromedriver_autoinstaller.install(True)
 ####################################################
 #런어스 로그인 함수
+
 def learnus_login():
     # 런어스 홈페이지 접속
-    driver = webdriver.Chrome(driver_path)
     url = "https://www.learnus.org/"
     driver.implicitly_wait(15)
     driver.get(url)
@@ -86,7 +86,7 @@ def learnus_login():
     for list in notification_list:
         print(list.text)
 
-    driver.close()
+   # driver.close()
     #while (True):
     #   pass
 
@@ -132,9 +132,11 @@ btn.config(text="로그인")
 
 #Enter 누르면 로그인
 ent2.bind("<Return>", login)
-
 #로그인 버튼 왼쪽 클릭하면 로그인
 btn.bind("<Button-1>", login)
 
+driver = webdriver.Chrome(driver_path)
+
 btn.pack()
 win.mainloop()
+

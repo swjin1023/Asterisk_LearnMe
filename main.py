@@ -9,7 +9,7 @@ import threading
 import time
 
 #####################################################
-# 기본설정 크롬드라이버 다운
+# 기본설정 크롬드라이버 자동다운
 chrome_ver = chromedriver_autoinstaller.get_chrome_version().split('.')[0]
 driver_path = f'./{chrome_ver}/chromedriver.exe'
 if os.path.exists(driver_path):
@@ -19,7 +19,7 @@ else:
     chromedriver_autoinstaller.install(True)
 ####################################################
 #런어스 로그인 함수
-def login():
+def learnus_login():
     # 런어스 홈페이지 접속
     driver = webdriver.Chrome(driver_path)
     url = "https://www.learnus.org/"
@@ -89,25 +89,34 @@ def login():
     driver.close()
     #while (True):
     #   pass
+
+#런어스 로그인 함수 쓰레드를 만들기
+def login(event):
+    threading.Thread(target=learnus_login).start()
+
 #####################################################
-#tkinter 라이브러리를 이용하여 GUI 만들기
+#tkinter 라이브러리를 이용하여 GUI 만들기#
+
+#제목 표시줄
 win = Tk()
 win.geometry("900x600")
 win.title("런어스 보조앱 (LearnMe)")
 win.iconbitmap(default='learnus_logo.ico')
 win.option_add("*Font", "맑은고딕 20")
-#######################################
-#런어스 로고
+
+#런어스 로고 넣기
 lab_d = Label(win)
 img=PhotoImage(file="learnus_logo.png")
 lab_d.config(image=img)
 lab_d.pack()
+
 #id 라벨과 입력창
 lab1=Label(win)
 lab1.config(text="학번")
 lab1.pack()
 ent1=Entry(win)
 ent1.pack()
+
 #pw 라벨과 입력창
 lab2=Label(win)
 lab2.config(text="비밀번호")
@@ -115,15 +124,17 @@ lab2.pack()
 ent2=Entry(win)
 ent2.config(show="*")
 ent2.pack()
-######################################\
+
+#로그인 버튼 넣기
 btn = Button(win)
 btn.config(width=10, height=1)
 btn.config(text="로그인")
-def enter_login(event):
-    login()
-ent2.bind("<Return>",enter_login)
 
-btn.config(command=login)
+#Enter 누르면 로그인
+ent2.bind("<Return>", login)
+
+#로그인 버튼 왼쪽 클릭하면 로그인
+btn.bind("<Button-1>", login)
+
 btn.pack()
-######################################
 win.mainloop()
