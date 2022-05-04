@@ -7,6 +7,7 @@ import requests
 from tkinter import *
 import threading
 import time
+import keyboard
 
 #####################################################
 # 기본설정 크롬드라이버 자동다운
@@ -48,7 +49,6 @@ def learnus_login():
     login_btn.click()
 
     # 수강 과목들 가져오기
-
     driver.get("https://www.learnus.org/?lang=")
     learnus_page_source = driver.page_source
     soup = BeautifulSoup(learnus_page_source, 'html.parser')
@@ -86,9 +86,13 @@ def learnus_login():
     for list in notification_list:
         print(list.text)
 
+    while (True):
+        if keyboard.is_pressed("esc"):
+            break
+
     driver.close()
-    #while (True):
-    #   pass
+    print("드라이버 종료")
+
 
 #런어스 로그인 함수 쓰레드를 만들기
 def login(event):
