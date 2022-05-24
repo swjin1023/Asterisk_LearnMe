@@ -34,7 +34,7 @@ time.sleep(1)
 # 비밀번호 입력창
 pw = driver.find_element(By.CSS_SELECTOR, "#ssoLoginForm > div > div:nth-child(1) > input:nth-child(4)")
 pw.click()
-pw.send_keys("rkdckstn1!")
+pw.send_keys("비번")
 time.sleep(1)
 
 # 로그인 버튼
