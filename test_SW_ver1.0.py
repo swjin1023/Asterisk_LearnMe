@@ -149,7 +149,7 @@ class UI(tk.Frame):
         btn.config(text="로그인")
         btn.bind("<Button-1>", login)
         btn.pack()
-
+#
 
 root = tk.Tk()
 root.geometry("900x600")
