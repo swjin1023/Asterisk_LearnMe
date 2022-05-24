@@ -51,17 +51,21 @@ for cookie in driver.get_cookies():
 
 req = s.get("https://www.learnus.org/?lang=ko")
 soup = BeautifulSoup(req.content, 'html.parser')
+
 course_title_list = soup.findAll("h3")
 course_title_url = soup.findAll("a", attrs={"class":"course-link"})
-
+keywords=["완료하지 못함","Not completed"]
 for title,url in zip(course_title_list,course_title_url):
-    print(title.text)
+    print("\n"+title.text)
     req1 = s.get(url["href"])
     soup = BeautifulSoup(req1.content, 'html.parser')
     uncompleted_list = soup.findAll("img", attrs={"class": "icon"})
     for list in uncompleted_list:
-        print(list)
-#for url in course_title_url:
-    #print(url["href"])
+        uncompleted_VOD = list.parent.parent.previous_sibling
+        if "완료하지 못함" in list["alt"] or "Not completed" in list["alt"]:
+            if "Zoom meeting" not in uncompleted_VOD.contents[0].find("img")["alt"] and "file" not in uncompleted_VOD.contents[0].find("img")["alt"]\
+            and "URL링크" not in uncompleted_VOD.contents[0].find("img")["alt"]:
+                print(list["alt"] + " <" + uncompleted_VOD.contents[0].find("img")["alt"] + ">")
+
 
 
