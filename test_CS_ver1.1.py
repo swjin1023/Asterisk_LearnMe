@@ -9,7 +9,6 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import threading
 import time
-import keyboard
 
 #####################################################
 # 기본설정 크롬드라이버 자동다운
