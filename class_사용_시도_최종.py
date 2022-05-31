@@ -175,7 +175,7 @@ def LearnMe():
 
         new_window()
 
-    # 런어스 로그인 함수 쓰레드를 만들기
+    ## 런어스 로그인 함수 쓰레드를 만들기
     def login(event):
         threading.Thread(target=learnus_login).start()
 
