@@ -208,7 +208,7 @@ def LearnMe():
             master.iconbitmap(default='learnus_logo.ico')
             master.option_add("*Font", "맑은고딕 20")
             buttonExample = tk.Button(master, width=20, height=1, text="이메일 보내기", command=self.createwindow)
-            buttonExample.pack()
+            buttonExample.place(x=285, y=430)
             self.pack()
             self.create_logo()
             self.create_id()
@@ -230,7 +230,6 @@ def LearnMe():
             ent1 = tk.Entry(self.master)
             ent1.pack()
 
-
         def create_pw(self): # pw 라벨과 입력창
             lab2 = tk.Label(self.master)
             lab2.config(text="비밀번호")
@@ -241,11 +240,10 @@ def LearnMe():
             ent2.bind("<Return>", learnus_login) # Enter 누르면 로그인
             ent2.pack()
 
-
         def login(self): # 로그인 버튼
             btn = tk.Button(self.master, height=1, width=10, text='로그인')
             btn.bind("<Button-1>", learnus_login) # 로그인 버튼 왼쪽 클릭하면 로그인
-            btn.pack()
+            btn.place(x=365, y=370)
 
         def createwindow(self):
             global newWindow
@@ -260,7 +258,6 @@ def LearnMe():
             string1 = StringVar(None)
             mail1 = Entry(newWindow, textvariable=string1, width=15)
             mail1.place(x=70, y=20, width=200)
-
 
             label2 = Label(newWindow, text="제목 : ", width=9, font=("맑은 고딕", 10))
             label2.place(x=10, y=70)
@@ -283,6 +280,7 @@ def LearnMe():
             label5 = Label(newWindow, text="pw : ", width=8, font=("맑은 고딕", 10)) # pw 라벨, entry
             label5.place(x=275, y=70)
             mail5 = Entry(newWindow, textvariable=StringVar(None), width=15)
+            mail5.config(show="*")
             mail5.place(x=320, y=65, width=200)
 
             def sendmail(self):
