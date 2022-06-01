@@ -207,7 +207,7 @@ def LearnMe():
             master.title("런어스 보조앱 (LearnMe)")
             master.iconbitmap(default='learnus_logo.ico')
             master.option_add("*Font", "맑은고딕 20")
-            buttonExample = tk.Button(master, width=20, height=1, text="이메일 보내기", command=self.createwindow())
+            buttonExample = tk.Button(master, width=20, height=1, text="이메일 보내기", command=self.createwindow)
             buttonExample.pack()
             self.pack()
             self.create_logo()
@@ -254,27 +254,38 @@ def LearnMe():
             newWindow.title('이메일 보내기')
             newWindow.resizable(width=False, height=False)
 
-            label = Label(newWindow, text="수신인 : ", width=9, font=("맑은 고딕", 10))
-            label.pack()
+            label1 = Label(newWindow, text="수신인 : ", width=9, font=("맑은 고딕", 10))
+            label1.place(x=10, y=25)
             global string1
             string1 = StringVar(None)
             mail1 = Entry(newWindow, textvariable=string1, width=15)
-            mail1.pack(padx=5, pady=10)
+            mail1.place(x=70, y=20, width=200)
 
-            label = Label(newWindow, text="제목 : ", width=9, font=("맑은 고딕", 10))
-            label.pack()
+
+            label2 = Label(newWindow, text="제목 : ", width=9, font=("맑은 고딕", 10))
+            label2.place(x=10, y=70)
             global string2
             string2 = StringVar(None)
             mail2 = Entry(newWindow, textvariable=string2, width=15)
-            mail2.pack(padx=5, pady=10)
+            mail2.place(x=70, y=65, width=200)
 
-            label = Label(newWindow, text="내용 : ", width=8, font=("맑은 고딕", 10))
-            label.pack()
+            label3 = Label(newWindow, text="내용 : ", width=8, font=("맑은 고딕", 10))
+            label3.place(x=240, y=120)
             global mail3
             mail3 = Text(newWindow, width=30, height=10)
-            mail3.pack()
+            mail3.place(x=30, y=150)
 
-            def sendmail():
+            label4 = Label(newWindow, text="Id : ", width=8, font=("맑은 고딕", 10)) # id 라벨, entry
+            label4.place(x=275, y=25)
+            mail4 = Entry(newWindow, textvariable=StringVar(None), width=15)
+            mail4.place(x=320, y=20, width=200)
+
+            label5 = Label(newWindow, text="pw : ", width=8, font=("맑은 고딕", 10)) # pw 라벨, entry
+            label5.place(x=275, y=70)
+            mail5 = Entry(newWindow, textvariable=StringVar(None), width=15)
+            mail5.place(x=320, y=65, width=200)
+
+            def sendmail(self):
                 html = False
                 receiver = string1.get()
                 subject = string2.get()
@@ -283,8 +294,8 @@ def LearnMe():
 
                 # 메일 설정
                 msg = MIMEMultipart()
-                username = '#######'  # 사용자의 네이버 이메일 대입
-                password = '#######'  # 사용자의 네이버 비밀번호 대입(2단계 인증 사용시 어플리케이션 비밀번호 발급 후 대입)
+                username = mail4.get()  # 사용자의 네이버 이메일 대입
+                password = mail5.get()  # 사용자의 네이버 비밀번호 대입(2단계 인증 사용시 어플리케이션 비밀번호 발급 후 대입)
                 msg['From'] = username
                 msg['To'] = receiver
                 msg['Subject'] = subject
@@ -303,14 +314,15 @@ def LearnMe():
                 # frame4 (보내기 버튼)
 
             button = Button(newWindow, height=1, width=7, text="보내기", font=("맑은 고딕", 10))
-            button.bind("<Button-1>", sendmail())
-            button.pack()
+            button.bind("<Button-1>", sendmail)
+            button.place(x=240, y=440)
 
 
     root = tk.Tk()
     LearnUs_app = UI(master=root)
     LearnUs_app.mainloop()
     newWindow.mainloop()
+
 
 
 

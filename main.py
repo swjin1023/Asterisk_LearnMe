@@ -35,9 +35,9 @@ def LearnMe():
 
         # 로딩 보여주기
         p_var = DoubleVar()
-        progressbar = ttk.Progressbar(win, maximum=100, length=350, variable=p_var)
+        progressbar = ttk.Progressbar(root, maximum=100, length=350, variable=p_var)
         progressbar.pack()
-        lab4 = Label(win)
+        lab4 = Label(root)
         lab4.config(text="로딩중 0%")
         lab4.pack()
 
@@ -147,7 +147,7 @@ def LearnMe():
 
         # 함수 정의
         def new_window():
-            win.destroy()
+            root.destroy()
 
             window = Tk()
             window.geometry("1300x600")
@@ -175,14 +175,14 @@ def LearnMe():
 
         new_window()
 
-    # 런어스 로그인 함수 쓰레드를 만들기
+    ## 런어스 로그인 함수 쓰레드를 만들기
     def login(event):
         threading.Thread(target=learnus_login).start()
 
     def loading_progress(window, setnum):
         # 로딩 보여주기
         p_var = DoubleVar()
-        progressbar = ttk.Progressbar(win, maximum=100, length=350, variable=p_var)
+        progressbar = ttk.Progressbar(root, maximum=100, length=350, variable=p_var)
         progressbar.pack()
         lab4 = Label(window)
         lab4.config(text="로딩중 " + setnum + "%")
@@ -198,107 +198,134 @@ def LearnMe():
     # sol -> '이메일 보내기' 버튼 클릭 시 Toplevel이 추가 팝업창 표시
     # 부모 위젯을 생성된 최상위 창으로 변경해주기 위한 작업 필요
 
-    def createnew():
-        newWindow = tk.Toplevel(win)
-        newWindow.geometry("550x500")
-        newWindow.title('이메일 보내기')
-        newWindow.resizable(width=False, height=False)
 
-        label = Label(newWindow, text="수신인 : ", width=9, font=("맑은 고딕", 10))
-        label.pack()
-        string1 = StringVar(None)
-        mail1 = Entry(newWindow, textvariable=string1, width=15)
-        mail1.pack(padx=5, pady=10)
+    class UI(tk.Frame): # tkinter UI class
+        def __init__(self, master=None):
+            super().__init__(master)
+            self.master = master
+            master.geometry("900x600") # 아래 4줄 : 제목 표시줄
+            master.title("런어스 보조앱 (LearnMe)")
+            master.iconbitmap(default='learnus_logo.ico')
+            master.option_add("*Font", "맑은고딕 20")
+            buttonExample = tk.Button(master, width=20, height=1, text="이메일 보내기", command=self.createwindow)
+            buttonExample.pack()
+            self.pack()
+            self.create_logo()
+            self.create_id()
+            self.create_pw()
+            self.login()
 
-        label = Label(newWindow, text="제목 : ", width=9, font=("맑은 고딕", 10))
-        label.pack()
-        string2 = StringVar(None)
-        mail2 = Entry(newWindow, textvariable=string2, width=15)
-        mail2.pack(padx=5, pady=10)
+        def create_logo(self): # learnus 로고 넣기
+            lab_d = tk.Label(self.master)
+            img = tk.PhotoImage(file="learnus_logo.png")
+            lab_d.config(image=img)
+            lab_d.image = img
+            lab_d.pack()
 
-        label = Label(newWindow, text="내용 : ", width=8, font=("맑은 고딕", 10))
-        label.pack()
-        mail3 = Text(newWindow, width=30, height=10)
-        mail3.pack()
+        def create_id(self): # id 라벨과 입력창
+            lab1 = tk.Label(self.master)
+            lab1.config(text="학번")
+            lab1.pack()
+            global ent1
+            ent1 = tk.Entry(self.master)
+            ent1.pack()
 
-        def sendmail():
-            html = False
-            receiver = string1.get()
-            subject = string2.get()
-            body = mail3.get("1.0", "end-1c")
-            server = smtplib.SMTP('smtp.naver.com', 587)
 
-            # 메일 설정
-            msg = MIMEMultipart()
-            username = '#######'  # 사용자의 네이버 이메일 대입
-            password = '#######'  # 사용자의 네이버 비밀번호 대입(2단계 인증 사용시 어플리케이션 비밀번호 발급 후 대입)
-            msg['From'] = username
-            msg['To'] = receiver
-            msg['Subject'] = subject
+        def create_pw(self): # pw 라벨과 입력창
+            lab2 = tk.Label(self.master)
+            lab2.config(text="비밀번호")
+            lab2.pack()
+            global ent2
+            ent2 = tk.Entry(self.master)
+            ent2.config(show="*")
+            ent2.bind("<Return>", learnus_login) # Enter 누르면 로그인
+            ent2.pack()
 
-            if html:
-                msg.attach(MIMEText(body, 'html'))
-            else:
-                msg.attach(MIMEText(body, 'plain'))
 
-            # 서버에 로그인
-            server.starttls()
-            server.login(username, password)
-            # 메일 보내기
-            mail = msg.as_string()
-            server.sendmail(username, receiver, mail)
+        def login(self): # 로그인 버튼
+            btn = tk.Button(self.master, height=1, width=10, text='로그인')
+            btn.bind("<Button-1>", learnus_login) # 로그인 버튼 왼쪽 클릭하면 로그인
+            btn.pack()
 
-            # frame4 (보내기 버튼)
-        button = Button(newWindow, height=1, width=7, text="보내기", font=("맑은 고딕", 10), command=sendmail)
-        button.pack()
+        def createwindow(self):
+            global newWindow
+            newWindow = tk.Toplevel(self.master)
+            newWindow.geometry("550x500")
+            newWindow.title('이메일 보내기')
+            newWindow.resizable(width=False, height=False)
 
-        newWindow.mainloop()
+            label1 = Label(newWindow, text="수신인 : ", width=9, font=("맑은 고딕", 10))
+            label1.place(x=10, y=25)
+            global string1
+            string1 = StringVar(None)
+            mail1 = Entry(newWindow, textvariable=string1, width=15)
+            mail1.place(x=70, y=20, width=200)
 
-    win = tk.Tk()
-    buttonExample = tk.Button(win, width=20, height=1, text="이메일 보내기", command=createnew)
-    buttonExample.pack()
 
-    # 제목 표시줄
-    win.geometry("900x600")
-    win.title("런어스 보조앱 (LearnMe)")
-    win.iconbitmap(default='learnus_logo.ico')
-    win.option_add("*Font", "맑은고딕 20")
+            label2 = Label(newWindow, text="제목 : ", width=9, font=("맑은 고딕", 10))
+            label2.place(x=10, y=70)
+            global string2
+            string2 = StringVar(None)
+            mail2 = Entry(newWindow, textvariable=string2, width=15)
+            mail2.place(x=70, y=65, width=200)
 
-    # 런어스 로고 넣기
-    lab_d = Label(win)
-    img = PhotoImage(file="learnus_logo.png")
-    lab_d.config(image=img)
-    lab_d.pack()
+            label3 = Label(newWindow, text="내용 : ", width=8, font=("맑은 고딕", 10))
+            label3.place(x=240, y=120)
+            global mail3
+            mail3 = Text(newWindow, width=30, height=10)
+            mail3.place(x=30, y=150)
 
-    # id 라벨과 입력창
-    lab1 = Label(win)
-    lab1.config(text="학번")
-    lab1.pack()
-    ent1 = Entry(win)
-    ent1.pack()
+            label4 = Label(newWindow, text="Id : ", width=8, font=("맑은 고딕", 10)) # id 라벨, entry
+            label4.place(x=275, y=25)
+            mail4 = Entry(newWindow, textvariable=StringVar(None), width=15)
+            mail4.place(x=320, y=20, width=200)
 
-    # pw 라벨과 입력창
-    lab2 = Label(win)
-    lab2.config(text="비밀번호")
-    lab2.pack()
-    ent2 = Entry(win)
-    ent2.config(show="*")
-    ent2.pack()
+            label5 = Label(newWindow, text="pw : ", width=8, font=("맑은 고딕", 10)) # pw 라벨, entry
+            label5.place(x=275, y=70)
+            mail5 = Entry(newWindow, textvariable=StringVar(None), width=15)
+            mail5.place(x=320, y=65, width=200)
 
-    # 로그인 버튼 넣기
-    btn = Button(win)
-    btn.config(width=10, height=1)
-    btn.config(text="로그인")
-    btn.pack()
+            def sendmail(self):
+                html = False
+                receiver = string1.get()
+                subject = string2.get()
+                body = mail3.get("1.0", "end-1c")
+                server = smtplib.SMTP('smtp.naver.com', 587)
 
-    # Enter 누르면 로그인
-    ent2.bind("<Return>", learnus_login)
-    # 로그인 버튼 왼쪽 클릭하면 로그인
-    btn.bind("<Button-1>", learnus_login)
+                # 메일 설정
+                msg = MIMEMultipart()
+                username = mail4.get()  # 사용자의 네이버 이메일 대입
+                password = mail5.get()  # 사용자의 네이버 비밀번호 대입(2단계 인증 사용시 어플리케이션 비밀번호 발급 후 대입)
+                msg['From'] = username
+                msg['To'] = receiver
+                msg['Subject'] = subject
 
-    win.mainloop()
+                if html:
+                    msg.attach(MIMEText(body, 'html'))
+                else:
+                    msg.attach(MIMEText(body, 'plain'))
+
+                # 서버에 로그인
+                server.starttls()
+                server.login(username, password)
+                # 메일 보내기
+                mail = msg.as_string()
+                server.sendmail(username, receiver, mail)
+                # frame4 (보내기 버튼)
+
+            button = Button(newWindow, height=1, width=7, text="보내기", font=("맑은 고딕", 10))
+            button.bind("<Button-1>", sendmail)
+            button.place(x=240, y=440)
+
+
+    root = tk.Tk()
+    LearnUs_app = UI(master=root)
+    LearnUs_app.mainloop()
+    newWindow.mainloop()
+
+
 
 
 ########################################################
-
+# 실행
 LearnMe()
